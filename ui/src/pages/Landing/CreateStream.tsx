@@ -14,10 +14,68 @@ import {
   Tooltip,
   Stack,
 } from "@chakra-ui/react";
-import { BigNumber } from "@ethersproject/bignumber";
-import { SingleDatepicker } from "../../components/DatePicker";
 import { InfoIcon } from "@chakra-ui/icons";
-import EmptyCard from "../../components/EmptyCard";
+import { SingleDatepicker } from "../../components/DatePicker";
+import Card from "../../components/Card";
+import { BigNumber } from "@ethersproject/bignumber";
+import { DateTime } from "luxon";
+import { Stream } from "../../types";
+
+const sendingStreamsData: Stream[] = [
+  {
+    isSender: true,
+    from: "solabc1234",
+    to: "sol1234xyz",
+    isActive: true,
+    startDate: DateTime.local(2021, 9, 5),
+    endDate: DateTime.local(2021, 9, 20),
+    claimableSOL: BigNumber.from(40),
+    totalSOL: BigNumber.from(50),
+  },
+  {
+    isSender: true,
+    from: "solabc1234",
+    to: "sol1234xyz",
+    isActive: true,
+    startDate: DateTime.local(2021, 9, 5),
+    endDate: DateTime.local(2021, 9, 10),
+    claimableSOL: BigNumber.from(30),
+    totalSOL: BigNumber.from(40),
+  },
+  {
+    isSender: true,
+    from: "solabc1234",
+    to: "sol1234xyz",
+    isActive: false,
+    startDate: DateTime.local(2021, 9, 5),
+    endDate: DateTime.local(2021, 9, 11),
+    claimableSOL: BigNumber.from(30),
+    totalSOL: BigNumber.from(50),
+  },
+];
+
+const receivingStreamsData: Stream[] = [
+  {
+    isSender: false,
+    from: "solabc1234",
+    to: "sol1234xyz",
+    isActive: true,
+    startDate: DateTime.local(2021, 9, 5),
+    endDate: DateTime.local(2021, 9, 10),
+    claimableSOL: BigNumber.from(90),
+    totalSOL: BigNumber.from(120),
+  },
+  {
+    isSender: false,
+    from: "solabc1234",
+    to: "sol1234xyz",
+    isActive: false,
+    startDate: DateTime.local(2021, 9, 5),
+    endDate: DateTime.local(2021, 9, 11),
+    claimableSOL: BigNumber.from(30),
+    totalSOL: BigNumber.from(50),
+  },
+];
 
 function CreateStream() {
   const [address, setAddress] = useState<string>("");
@@ -25,7 +83,7 @@ function CreateStream() {
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   return (
-    <>
+    <Box mb="5rem">
       <Container my="16" minW={["0", "0", "2xl", "2xl"]}>
         <Center>
           <VStack>
@@ -103,7 +161,7 @@ function CreateStream() {
           </VStack>
         </Center>
       </Container>
-      <Container minW={{ base: "100%", lg: "5xl" }} mt="10" alignItems="center">
+      <Container minW={{ base: "100%", lg: "90%" }} mt="10" alignItems="center">
         <Stack
           direction={{ base: "column", md: "row" }}
           alignItems={{ base: "center", md: "stretch" }}
@@ -111,14 +169,19 @@ function CreateStream() {
           spacing={5}
           justifyContent="space-between"
         >
-          <EmptyCard title="Sending Streams" description="No Streams Sending" />
-          <EmptyCard
+          <Card
+            title="Sending Streams"
+            description="No Streams Sending"
+            streams={sendingStreamsData}
+          />
+          <Card
             title="Receiving Streams"
             description="No Streams Receiving"
+            streams={receivingStreamsData}
           />
         </Stack>
       </Container>
-    </>
+    </Box>
   );
 }
 
