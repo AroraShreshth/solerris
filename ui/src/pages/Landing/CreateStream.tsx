@@ -20,6 +20,8 @@ import Card from "../../components/Card";
 import { BigNumber } from "@ethersproject/bignumber";
 import { DateTime } from "luxon";
 import { Stream } from "../../types";
+import { ethers } from "ethers";
+import { toDecimal } from "../../utils";
 
 const sendingStreamsData: Stream[] = [
   {
@@ -111,13 +113,13 @@ function CreateStream() {
                     aria-label="amount"
                     autoComplete="off"
                     type="number"
-                    value={amount?.toString()}
+                    value={toDecimal(amount, 18)}
                     onChange={(e) => {
                       const _amount = e.target.value;
                       const _amountBN =
                         _amount == ""
                           ? BigNumber.from(0)
-                          : BigNumber.from(_amount);
+                          : BigNumber.from(ethers.utils.parseEther(_amount));
                       setAmount(_amountBN);
                     }}
                     bg="gray.700"
